@@ -15,7 +15,7 @@ export default async function PlayersPage() {
   return (
     <>
       <DashboardHeader title="Players" subtitle={`${players.length} players registered`} />
-      <main className="flex-1 overflow-y-auto p-6">
+      <main className="flex-1 overflow-y-auto p-4 sm:p-6">
         {/* Controls */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-6 text-sm">
@@ -33,7 +33,7 @@ export default async function PlayersPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <Input
                 placeholder="Search players..."
-                className="pl-9 bg-white/5 border-white/10 text-white placeholder:text-slate-500 w-64 h-9"
+                className="pl-9 bg-white/5 border-white/10 text-white placeholder:text-slate-500 w-full sm:w-64 h-9"
               />
             </div>
             <Button className="bg-red-600 hover:bg-red-500 text-white gap-2 h-9">

@@ -45,7 +45,7 @@ export function StatCard({
       transition={{ duration: 0.5, delay }}
       whileHover={{ y: -2 }}
       className={cn(
-        'rounded-2xl p-6 relative overflow-hidden',
+        'rounded-2xl p-4 sm:p-6 relative overflow-hidden',
         variant === 'glass' && 'bg-white/5 backdrop-blur-sm border border-white/10',
         variant === 'default' && 'bg-slate-800/50 border border-white/5',
         variant === 'gradient' && 'bg-gradient-to-br from-red-600/20 to-red-900/10 border border-red-500/20',

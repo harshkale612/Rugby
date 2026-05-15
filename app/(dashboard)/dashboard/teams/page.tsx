@@ -12,8 +12,8 @@ export default async function TeamsPage() {
   return (
     <>
       <DashboardHeader title="Teams" subtitle={`${teams.length} teams managed`} />
-      <main className="flex-1 overflow-y-auto p-6">
-        <div className="flex items-center justify-between mb-8">
+      <main className="flex-1 overflow-y-auto p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <h2 className="text-white font-semibold text-lg">All Teams</h2>
             <p className="text-slate-500 text-sm">Manage your club's squads and age groups</p>

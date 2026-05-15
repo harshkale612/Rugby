@@ -13,12 +13,12 @@ export default async function ClubPage() {
   return (
     <>
       <DashboardHeader title="Club Management" subtitle={club.name} />
-      <main className="flex-1 overflow-y-auto p-6 space-y-6">
+      <main className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
         {/* Club hero */}
-        <div className="relative bg-gradient-to-br from-red-950/40 via-slate-900 to-slate-900 border border-white/5 rounded-2xl p-8 overflow-hidden">
+        <div className="relative bg-gradient-to-br from-red-950/40 via-slate-900 to-slate-900 border border-white/5 rounded-2xl p-5 sm:p-8 overflow-hidden">
           <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-red-600/5 blur-3xl" />
           <div className="relative flex flex-col sm:flex-row items-start gap-6">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-red-600/20 to-red-900/20 border border-red-500/20 flex items-center justify-center flex-shrink-0">
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-red-600/20 to-red-900/20 border border-red-500/20 flex items-center justify-center shrink-0">
               <Shield className="w-10 h-10 text-red-400" />
             </div>
             <div className="flex-1">

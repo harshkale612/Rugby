@@ -16,7 +16,7 @@ export default async function DashboardPage() {
   return (
     <>
       <DashboardHeader title="Dashboard" subtitle={`Welcome back — ${club.name}`} />
-      <main className="flex-1 overflow-y-auto p-6 space-y-6">
+      <main className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
         <DashboardOverview club={club} players={players} teams={teams} />
       </main>
     </>

@@ -13,7 +13,7 @@ export default function LeaguesPage() {
   return (
     <>
       <DashboardHeader title="Leagues" subtitle="League standings and competition overview" />
-      <main className="flex-1 overflow-y-auto p-6 space-y-6">
+      <main className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
         {/* League header card */}
         <div className="bg-slate-900/50 border border-white/5 rounded-2xl p-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">

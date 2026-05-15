@@ -1,0 +1,50 @@
+import type { Club } from '@/types';
+
+export const mockClub: Club = {
+  id: '1',
+  name: 'Ironclad RFC',
+  slug: 'ironclad-rfc',
+  logo: '/images/club-logo.png',
+  coverImage: '/images/club-cover.jpg',
+  founded: 1987,
+  location: 'Cardiff, Wales',
+  city: 'Cardiff',
+  country: 'Wales',
+  description:
+    'Ironclad RFC is one of Wales\'s most storied rugby clubs, boasting a proud history of developing elite talent and fostering a strong community spirit. From grassroots to competitive leagues, we are committed to excellence on and off the pitch.',
+  primaryColor: '#1a1a2e',
+  secondaryColor: '#e94560',
+  website: 'https://ironclad-rfc.com',
+  email: 'info@ironclad-rfc.com',
+  phone: '+44 29 2000 1234',
+  socialLinks: {
+    twitter: 'https://twitter.com/ironcladrfc',
+    facebook: 'https://facebook.com/ironcladrfc',
+    instagram: 'https://instagram.com/ironcladrfc',
+    youtube: 'https://youtube.com/ironcladrfc',
+  },
+  stats: {
+    totalPlayers: 342,
+    totalTeams: 8,
+    leaguesWon: 14,
+    yearsActive: 37,
+    totalMatches: 2847,
+    winRate: 64,
+  },
+  sponsors: [
+    { id: 's1', name: 'Dragon Energy', logo: '/sponsors/dragon.png', website: '#', tier: 'title' },
+    { id: 's2', name: 'Celtic Finance', logo: '/sponsors/celtic.png', website: '#', tier: 'gold' },
+    { id: 's3', name: 'Valleys Brew', logo: '/sponsors/valleys.png', website: '#', tier: 'gold' },
+    { id: 's4', name: 'Cardiff Physio', logo: '/sponsors/physio.png', website: '#', tier: 'silver' },
+    { id: 's5', name: 'Summit Sports', logo: '/sponsors/summit.png', website: '#', tier: 'silver' },
+    { id: 's6', name: 'RugbyKit.co', logo: '/sponsors/kit.png', website: '#', tier: 'bronze' },
+  ],
+  achievements: [
+    { id: 'a1', title: 'Welsh Regional League Champions', year: 2024, description: 'Unbeaten in the final league phase' },
+    { id: 'a2', title: 'County Cup Winners', year: 2023 },
+    { id: 'a3', title: 'Welsh Regional League Champions', year: 2021 },
+    { id: 'a4', title: 'National Plate Champions', year: 2019 },
+    { id: 'a5', title: 'County Cup Winners', year: 2018 },
+    { id: 'a6', title: 'Community Shield', year: 2017 },
+  ],
+};

@@ -9,6 +9,7 @@ import { TeamCard } from '@/components/common/TeamCard';
 import { StandingsTable } from '@/components/common/StandingsTable';
 import type { Club, Player, Team } from '@/types';
 import { mockLeague } from '@/data';
+import { getOverviewMetrics } from '@/features/dashboard/overview-shared';
 
 interface DashboardOverviewProps {
   club: Club;
@@ -17,9 +18,11 @@ interface DashboardOverviewProps {
 }
 
 export function DashboardOverview({ club, players, teams }: DashboardOverviewProps) {
-  const activeTeams = teams.filter((t) => t.status === 'active').length;
-  const injuredPlayers = players.filter((p) => p.status === 'injured').length;
-  const pendingPlayers = players.filter((p) => p.registrationStatus === 'pending').length;
+  const { activeTeams, injuredPlayers, pendingPlayers } = getOverviewMetrics({
+    club,
+    players,
+    teams,
+  });
 
   return (
     <div className="space-y-8">

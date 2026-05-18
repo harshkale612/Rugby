@@ -1,5 +1,5 @@
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
-import { DashboardOverview } from '@/features/dashboard/DashboardOverview';
+import { DashboardLayoutSwitcher } from '@/features/dashboard/DashboardLayoutSwitcher';
 import { getClub } from '@/services/club.service';
 import { getPlayers } from '@/services/player.service';
 import { getTeams } from '@/services/team.service';
@@ -17,7 +17,7 @@ export default async function DashboardPage() {
     <>
       <DashboardHeader title="Dashboard" subtitle={`Welcome back — ${club.name}`} />
       <main className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
-        <DashboardOverview club={club} players={players} teams={teams} />
+        <DashboardLayoutSwitcher club={club} players={players} teams={teams} />
       </main>
     </>
   );

@@ -109,7 +109,7 @@ export function HeroSection() {
                 size="lg"
                 className="text-slate-300 hover:text-white hover:bg-white/5 px-6 py-4 text-base h-auto border border-white/10 hover:border-white/20"
               >
-                View Demo Dashboard
+                Explore demo dashboards
               </Button>
             </Link>
           </motion.div>

@@ -10,7 +10,7 @@ import { DashboardOverviewBento } from '@/features/dashboard/DashboardOverviewBe
 import { DashboardOverviewCommand } from '@/features/dashboard/DashboardOverviewCommand';
 
 const LAYOUTS = [
-  { id: 'classic' as const, label: 'Classic', hint: 'Split grid', icon: LayoutGrid },
+  { id: 'classic' as const, label: 'Classic', hint: 'Standard grid', icon: LayoutGrid },
   { id: 'bento' as const, label: 'Bento', hint: 'Glass mosaic', icon: Sparkles },
   { id: 'command' as const, label: 'Command', hint: 'Data rail', icon: Radar },
 ];
@@ -52,21 +52,23 @@ function DashboardLayoutSwitcherInner({ club, players, teams }: SwitcherInnerPro
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-4 sm:p-5 backdrop-blur-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
+      {/* Layout switcher card */}
+      <div className="premium-card rounded-2xl p-5 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
-              Demo dashboards
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1">
+              Demo layouts
             </p>
-            <h2 className="text-lg sm:text-xl font-semibold text-white mt-1">
-              Same data — three layouts
+            <h2 className="text-base sm:text-lg font-bold text-white">
+              Same data — three different views
             </h2>
-            <p className="text-sm text-slate-500 mt-0.5 max-w-xl">
-              Switch styles to compare structure and visual design. Links stay shareable via the URL.
+            <p className="text-xs text-slate-600 mt-0.5 max-w-md">
+              Switch styles to compare structure and visual design. Layout is shared via URL.
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           {LAYOUTS.map(({ id, label, hint, icon: Icon }) => {
             const selected = active === id;
             return (
@@ -75,25 +77,31 @@ function DashboardLayoutSwitcherInner({ club, players, teams }: SwitcherInnerPro
                 type="button"
                 onClick={() => setLayout(id)}
                 className={cn(
-                  'flex items-start gap-3 rounded-xl border px-3 py-3 sm:px-4 sm:py-3.5 text-left transition-all',
+                  'relative flex items-center gap-3 rounded-xl border px-4 py-3.5 text-left transition-all duration-200 overflow-hidden',
                   selected
-                    ? 'border-red-500/40 bg-red-500/10 shadow-lg shadow-red-950/30 ring-1 ring-red-500/20'
-                    : 'border-white/5 bg-slate-950/40 hover:border-white/15 hover:bg-slate-900/60'
+                    ? 'border-red-500/30 bg-red-500/8 shadow-lg shadow-red-950/20'
+                    : 'border-white/5 bg-white/3 hover:border-white/10 hover:bg-white/5'
                 )}
               >
-                <span
-                  className={cn(
-                    'mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border',
-                    selected
-                      ? 'border-red-400/30 bg-red-500/15 text-red-300'
-                      : 'border-white/10 bg-white/5 text-slate-400'
-                  )}
-                >
-                  <Icon className="h-4 w-4" />
+                {selected && (
+                  <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-red-500/50 to-transparent" />
+                )}
+                <span className={cn(
+                  'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border transition-all',
+                  selected
+                    ? 'border-red-500/25 bg-red-500/12 text-red-300'
+                    : 'border-white/8 bg-white/4 text-slate-500'
+                )}>
+                  <Icon className="h-4 w-4" suppressHydrationWarning />
                 </span>
                 <span className="min-w-0">
-                  <span className="block text-sm font-semibold text-white">{label}</span>
-                  <span className="block text-xs text-slate-500 mt-0.5">{hint}</span>
+                  <span className={cn(
+                    'block text-sm font-semibold transition-colors',
+                    selected ? 'text-white' : 'text-slate-400'
+                  )}>
+                    {label}
+                  </span>
+                  <span className="block text-xs text-slate-600 mt-0.5">{hint}</span>
                 </span>
               </button>
             );
@@ -110,7 +118,7 @@ function DashboardLayoutSwitcherInner({ club, players, teams }: SwitcherInnerPro
 
 function OverviewFallback() {
   return (
-    <div className="min-h-[28rem] rounded-2xl border border-white/5 bg-slate-900/30 animate-pulse" />
+    <div className="min-h-112 rounded-2xl border border-white/5 bg-white/2 animate-pulse" />
   );
 }
 

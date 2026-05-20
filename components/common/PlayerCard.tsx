@@ -13,40 +13,45 @@ interface PlayerCardProps {
   compact?: boolean;
 }
 
-const statusColors: Record<string, string> = {
-  active: 'bg-green-500/15 text-green-400 border-green-500/20',
-  injured: 'bg-red-500/15 text-red-400 border-red-500/20',
-  suspended: 'bg-yellow-500/15 text-yellow-400 border-yellow-500/20',
-  inactive: 'bg-slate-700/50 text-slate-400 border-slate-600/20',
+const statusConfig: Record<string, { label: string; dot: string; badge: string }> = {
+  active:    { label: 'Active',    dot: 'bg-emerald-400', badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' },
+  injured:   { label: 'Injured',   dot: 'bg-red-400',     badge: 'bg-red-500/10 text-red-400 border-red-500/20' },
+  suspended: { label: 'Suspended', dot: 'bg-amber-400',   badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20' },
+  inactive:  { label: 'Inactive',  dot: 'bg-slate-500',   badge: 'bg-slate-700/30 text-slate-400 border-slate-600/20' },
 };
 
 export function PlayerCard({ player, delay = 0, compact = false }: PlayerCardProps) {
+  const status = statusConfig[player.status] ?? statusConfig.inactive;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4, delay }}
-      whileHover={{ y: -4, scale: 1.01 }}
+      transition={{ duration: 0.4, delay, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -3, transition: { duration: 0.2 } }}
       className="group"
     >
       <Link href={`/player/${player.id}`}>
-        <div className="bg-slate-800/40 border border-white/5 rounded-2xl overflow-hidden hover:border-white/10 hover:bg-slate-800/60 transition-all duration-300">
-          {/* Jersey number band */}
-          <div className="relative h-2 bg-gradient-to-r from-red-700 to-red-500" />
+        <div className="premium-card rounded-2xl overflow-hidden">
+          {/* Position accent bar */}
+          <div className="h-0.5 bg-linear-to-r from-red-600 via-red-500 to-transparent" />
 
           <div className={cn('p-5', compact && 'p-4')}>
             <div className="flex items-start gap-4">
-              {/* Avatar */}
-              <div className="relative flex-shrink-0">
-                <Avatar className={cn('border-2 border-white/10', compact ? 'w-12 h-12' : 'w-16 h-16')}>
+              {/* Avatar + jersey */}
+              <div className="relative shrink-0">
+                <Avatar className={cn(
+                  'ring-2 ring-white/8 group-hover:ring-white/16 transition-all duration-300',
+                  compact ? 'w-11 h-11' : 'w-14 h-14'
+                )}>
                   <AvatarImage src={player.avatar} alt={player.name} />
-                  <AvatarFallback className="bg-red-600/20 text-red-300 font-bold text-lg">
+                  <AvatarFallback className="bg-slate-800 text-slate-200 font-bold text-base">
                     {getInitials(player.name)}
                   </AvatarFallback>
                 </Avatar>
                 {player.jerseyNumber && (
-                  <span className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-red-600 text-white text-xs font-bold flex items-center justify-center border-2 border-slate-800">
+                  <span className="absolute -bottom-1 -right-1 min-w-5.5 h-5.5 rounded-full bg-red-600 text-white text-[10px] font-black flex items-center justify-center border-2 border-slate-900 px-0.5">
                     {player.jerseyNumber}
                   </span>
                 )}
@@ -55,20 +60,30 @@ export function PlayerCard({ player, delay = 0, compact = false }: PlayerCardPro
               {/* Info */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between gap-2 mb-1">
-                  <h3 className="text-white font-semibold truncate group-hover:text-red-300 transition-colors">
+                  <h3 className="text-white font-semibold truncate group-hover:text-red-200 transition-colors duration-200 text-sm">
                     {player.name}
                   </h3>
                   <Badge
                     variant="outline"
-                    className={cn('text-xs border flex-shrink-0 capitalize', statusColors[player.status])}
+                    className={cn('text-[10px] border shrink-0 capitalize px-1.5 py-0.5', status.badge)}
                   >
-                    {player.status}
+                    <span className={cn('w-1 h-1 rounded-full mr-1 inline-block', status.dot)} />
+                    {status.label}
                   </Badge>
                 </div>
-                <p className="text-red-400 text-sm font-medium mb-1">{player.position}</p>
-                <div className="flex items-center gap-3 text-xs text-slate-500">
+
+                <p className="text-red-400 text-xs font-semibold mb-1.5 uppercase tracking-wide">
+                  {player.position}
+                </p>
+
+                <div className="flex items-center gap-2.5 text-xs text-slate-600">
                   <span>{player.nationality}</span>
-                  {player.dateOfBirth && <><span>·</span><span>{calculateAge(player.dateOfBirth)} yrs</span></>}
+                  {player.dateOfBirth && (
+                    <>
+                      <span className="text-slate-700">·</span>
+                      <span>{calculateAge(player.dateOfBirth)} yrs</span>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -81,9 +96,9 @@ export function PlayerCard({ player, delay = 0, compact = false }: PlayerCardPro
                   { label: 'Tries', value: player.stats.tries },
                   { label: 'Tackles', value: player.stats.tackles },
                 ].map(({ label, value }) => (
-                  <div key={label} className="text-center">
-                    <div className="text-lg font-bold text-white">{value}</div>
-                    <div className="text-xs text-slate-500">{label}</div>
+                  <div key={label} className="text-center bg-white/3 rounded-xl py-2.5">
+                    <div className="text-lg font-black text-white tabular">{value}</div>
+                    <div className="text-[10px] uppercase tracking-wider text-slate-600 mt-0.5">{label}</div>
                   </div>
                 ))}
               </div>

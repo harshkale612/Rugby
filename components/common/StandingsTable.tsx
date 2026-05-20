@@ -18,22 +18,22 @@ export function StandingsTable({ standings, highlightTeamId, compact = false }: 
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-white/5">
-            <th className="text-left py-3 px-3 text-slate-500 font-medium text-xs uppercase tracking-wider w-8">#</th>
-            <th className="text-left py-3 px-3 text-slate-500 font-medium text-xs uppercase tracking-wider">Team</th>
-            <th className="text-center py-3 px-2 text-slate-500 font-medium text-xs uppercase tracking-wider">P</th>
-            <th className="text-center py-3 px-2 text-slate-500 font-medium text-xs uppercase tracking-wider">W</th>
-            <th className="text-center py-3 px-2 text-slate-500 font-medium text-xs uppercase tracking-wider">D</th>
-            <th className="text-center py-3 px-2 text-slate-500 font-medium text-xs uppercase tracking-wider">L</th>
+            <th className="text-left py-3 px-3 text-slate-600 font-semibold text-[10px] uppercase tracking-widest w-10">#</th>
+            <th className="text-left py-3 px-3 text-slate-600 font-semibold text-[10px] uppercase tracking-widest">Team</th>
+            <th className="text-center py-3 px-2 text-slate-600 font-semibold text-[10px] uppercase tracking-widest">P</th>
+            <th className="text-center py-3 px-2 text-slate-600 font-semibold text-[10px] uppercase tracking-widest">W</th>
+            <th className="text-center py-3 px-2 text-slate-600 font-semibold text-[10px] uppercase tracking-widest">D</th>
+            <th className="text-center py-3 px-2 text-slate-600 font-semibold text-[10px] uppercase tracking-widest">L</th>
             {!compact && (
               <>
-                <th className="text-center py-3 px-2 text-slate-500 font-medium text-xs uppercase tracking-wider">PF</th>
-                <th className="text-center py-3 px-2 text-slate-500 font-medium text-xs uppercase tracking-wider">PA</th>
-                <th className="text-center py-3 px-2 text-slate-500 font-medium text-xs uppercase tracking-wider">+/-</th>
-                <th className="text-center py-3 px-2 text-slate-500 font-medium text-xs uppercase tracking-wider">BP</th>
-                <th className="text-center py-3 px-2 text-slate-500 font-medium text-xs uppercase tracking-wider">Form</th>
+                <th className="text-center py-3 px-2 text-slate-600 font-semibold text-[10px] uppercase tracking-widest">PF</th>
+                <th className="text-center py-3 px-2 text-slate-600 font-semibold text-[10px] uppercase tracking-widest">PA</th>
+                <th className="text-center py-3 px-2 text-slate-600 font-semibold text-[10px] uppercase tracking-widest">+/-</th>
+                <th className="text-center py-3 px-2 text-slate-600 font-semibold text-[10px] uppercase tracking-widest">BP</th>
+                <th className="text-center py-3 px-2 text-slate-600 font-semibold text-[10px] uppercase tracking-widest">Form</th>
               </>
             )}
-            <th className="text-center py-3 px-3 text-slate-400 font-bold text-xs uppercase tracking-wider">Pts</th>
+            <th className="text-center py-3 px-3 text-slate-400 font-bold text-[10px] uppercase tracking-widest">Pts</th>
           </tr>
         </thead>
         <tbody>
@@ -45,25 +45,27 @@ export function StandingsTable({ standings, highlightTeamId, compact = false }: 
             return (
               <motion.tr
                 key={standing.team.id}
-                initial={{ opacity: 0, x: -10 }}
+                initial={{ opacity: 0, x: -8 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: idx * 0.05 }}
+                transition={{ duration: 0.3, delay: idx * 0.04 }}
                 className={cn(
-                  'border-b border-white/5 hover:bg-white/3 transition-colors',
-                  isHighlighted && 'bg-red-500/5 border-red-500/10'
+                  'border-b border-white/3 transition-colors duration-150 group',
+                  isHighlighted
+                    ? 'bg-red-500/5 hover:bg-red-500/8'
+                    : 'hover:bg-white/3'
                 )}
               >
                 {/* Position */}
                 <td className="py-3.5 px-3">
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-2">
                     <div className={cn(
-                      'w-1 h-6 rounded-full',
-                      isPromotion ? 'bg-green-500' : isRelegation ? 'bg-red-500' : 'bg-transparent'
+                      'w-0.5 h-5 rounded-full shrink-0',
+                      isPromotion ? 'bg-emerald-500' : isRelegation ? 'bg-red-500' : 'bg-transparent'
                     )} />
                     <span className={cn(
-                      'text-sm font-semibold',
-                      isHighlighted ? 'text-red-400' : 'text-slate-400'
+                      'text-sm font-bold tabular',
+                      isHighlighted ? 'text-red-400' : 'text-slate-500'
                     )}>
                       {standing.position}
                     </span>
@@ -72,48 +74,51 @@ export function StandingsTable({ standings, highlightTeamId, compact = false }: 
 
                 {/* Team */}
                 <td className="py-3.5 px-3">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-6 h-6 rounded-md bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
-                      <span className="text-xs font-bold text-slate-300">
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-lg bg-white/5 border border-white/8 flex items-center justify-center shrink-0">
+                      <span className="text-[10px] font-bold text-slate-300">
                         {standing.team.shortName?.slice(0, 2) ?? standing.team.name.slice(0, 2)}
                       </span>
                     </div>
                     <span className={cn(
-                      'font-semibold whitespace-nowrap',
+                      'font-semibold whitespace-nowrap text-sm',
                       isHighlighted ? 'text-white' : 'text-slate-300'
                     )}>
                       {compact ? (standing.team.shortName ?? standing.team.name) : standing.team.name}
                     </span>
                     {isHighlighted && (
-                      <span className="text-xs text-red-400 font-medium bg-red-400/10 px-1.5 py-0.5 rounded">You</span>
+                      <span className="text-[10px] text-red-400 font-bold bg-red-400/10 px-1.5 py-0.5 rounded-full border border-red-400/20">
+                        You
+                      </span>
                     )}
                   </div>
                 </td>
 
-                {/* Stats */}
+                {/* Core stats */}
                 {[standing.played, standing.won, standing.drawn, standing.lost].map((val, i) => (
-                  <td key={i} className="py-3.5 px-2 text-center text-slate-400 tabular-nums">{val}</td>
+                  <td key={i} className="py-3.5 px-2 text-center text-slate-500 tabular text-sm">{val}</td>
                 ))}
 
                 {!compact && (
                   <>
-                    <td className="py-3.5 px-2 text-center text-slate-400 tabular-nums">{standing.pointsFor}</td>
-                    <td className="py-3.5 px-2 text-center text-slate-400 tabular-nums">{standing.pointsAgainst}</td>
+                    <td className="py-3.5 px-2 text-center text-slate-500 tabular text-sm">{standing.pointsFor}</td>
+                    <td className="py-3.5 px-2 text-center text-slate-500 tabular text-sm">{standing.pointsAgainst}</td>
                     <td className={cn(
-                      'py-3.5 px-2 text-center font-medium tabular-nums',
-                      standing.pointsDiff > 0 ? 'text-green-400' : standing.pointsDiff < 0 ? 'text-red-400' : 'text-slate-400'
+                      'py-3.5 px-2 text-center font-semibold tabular text-sm',
+                      standing.pointsDiff > 0 ? 'text-emerald-400' : standing.pointsDiff < 0 ? 'text-red-400' : 'text-slate-500'
                     )}>
                       {standing.pointsDiff > 0 ? '+' : ''}{standing.pointsDiff}
                     </td>
-                    <td className="py-3.5 px-2 text-center text-slate-400 tabular-nums">{standing.bonusPoints}</td>
-
-                    {/* Form */}
+                    <td className="py-3.5 px-2 text-center text-slate-500 tabular text-sm">{standing.bonusPoints}</td>
                     <td className="py-3.5 px-2">
                       <div className="flex items-center justify-center gap-0.5">
                         {standing.form.map((result, ri) => (
                           <span
                             key={ri}
-                            className={cn('w-5 h-5 rounded-sm text-white text-xs font-bold flex items-center justify-center', getFormColor(result))}
+                            className={cn(
+                              'w-5 h-5 rounded text-white text-[10px] font-bold flex items-center justify-center',
+                              getFormColor(result)
+                            )}
                           >
                             {result}
                           </span>
@@ -126,7 +131,7 @@ export function StandingsTable({ standings, highlightTeamId, compact = false }: 
                 {/* Points */}
                 <td className="py-3.5 px-3 text-center">
                   <span className={cn(
-                    'font-black text-base',
+                    'font-black text-base tabular',
                     isHighlighted ? 'text-red-400' : 'text-white'
                   )}>
                     {standing.points}

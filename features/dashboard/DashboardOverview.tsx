@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Activity, AlertCircle, Clock, Users, Shield, User, Trophy } from 'lucide-react';
+import { AlertCircle, Users, User, Trophy, TrendingUp, CheckCircle2, Circle } from 'lucide-react';
 import Link from 'next/link';
 import { StatCard } from '@/components/common/StatCard';
 import { PlayerCard } from '@/components/common/PlayerCard';
@@ -17,65 +17,45 @@ interface DashboardOverviewProps {
   teams: Team[];
 }
 
+function SectionTitle({ children, href, linkLabel }: { children: React.ReactNode; href: string; linkLabel: string }) {
+  return (
+    <div className="flex items-center justify-between mb-4">
+      <h2 className="text-white font-bold text-sm flex items-center gap-2">{children}</h2>
+      <Link href={href} className="text-slate-600 hover:text-red-400 text-xs font-medium transition-colors duration-200">
+        {linkLabel} →
+      </Link>
+    </div>
+  );
+}
+
 export function DashboardOverview({ club, players, teams }: DashboardOverviewProps) {
-  const { activeTeams, injuredPlayers, pendingPlayers } = getOverviewMetrics({
-    club,
-    players,
-    teams,
-  });
+  const { activeTeams, injuredPlayers, pendingPlayers } = getOverviewMetrics({ club, players, teams });
 
   return (
-    <div className="space-y-8">
-      {/* Stats */}
+    <div className="space-y-6">
+      {/* KPI Stats */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-        <StatCard
-          title="Total Players"
-          value={club.stats.totalPlayers}
-          icon="Users"
-          trend={{ value: 8, label: 'this season' }}
-          delay={0}
-        />
-        <StatCard
-          title="Active Teams"
-          value={activeTeams}
-          icon="Shield"
-          delay={0.08}
-        />
-        <StatCard
-          title="Win Rate"
-          value={`${club.stats.winRate}%`}
-          icon="TrendingUp"
-          trend={{ value: 5, label: 'vs last season' }}
-          variant="gradient"
-          delay={0.16}
-        />
-        <StatCard
-          title="Leagues Won"
-          value={club.stats.leaguesWon}
-          icon="Trophy"
-          delay={0.24}
-        />
+        <StatCard title="Total Players" value={club.stats.totalPlayers} icon="Users" trend={{ value: 8, label: 'this season' }} delay={0} />
+        <StatCard title="Active Teams" value={activeTeams} icon="Shield" delay={0.06} />
+        <StatCard title="Win Rate" value={`${club.stats.winRate}%`} icon="TrendingUp" trend={{ value: 5, label: 'vs last season' }} variant="gradient" delay={0.12} />
+        <StatCard title="Leagues Won" value={club.stats.leaguesWon} icon="Trophy" delay={0.18} />
       </div>
 
-      {/* Main grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        {/* Left: Teams + League */}
-        <div className="xl:col-span-2 space-y-6">
+      {/* Main content grid */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
+
+        {/* Left col: Teams + Standings */}
+        <div className="xl:col-span-2 space-y-5">
           {/* Teams */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.5, delay: 0.08 }}
           >
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-white font-semibold flex items-center gap-2">
-                <Users className="w-4 h-4 text-blue-400" />
-                Active Teams
-              </h2>
-              <Link href="/dashboard/teams" className="text-slate-500 hover:text-red-400 text-xs transition-colors">
-                Manage all →
-              </Link>
-            </div>
+            <SectionTitle href="/dashboard/teams" linkLabel="All teams">
+              <Users className="w-4 h-4 text-blue-400" suppressHydrationWarning />
+              Active Teams
+            </SectionTitle>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {teams.slice(0, 2).map((t, i) => (
                 <TeamCard key={t.id} team={t} delay={i * 0.06} />
@@ -83,89 +63,81 @@ export function DashboardOverview({ club, players, teams }: DashboardOverviewPro
             </div>
           </motion.div>
 
-          {/* League standings preview */}
+          {/* League standings */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-white font-semibold flex items-center gap-2">
-                <Trophy className="w-4 h-4 text-yellow-400" />
-                League Standings
-              </h2>
-              <Link href="/dashboard/leagues" className="text-slate-500 hover:text-red-400 text-xs transition-colors">
-                Full table →
-              </Link>
-            </div>
-            <div className="bg-slate-900/50 border border-white/5 rounded-2xl overflow-hidden">
-              <div className="px-3">
+            <SectionTitle href="/dashboard/leagues" linkLabel="Full table">
+              <Trophy className="w-4 h-4 text-amber-400" suppressHydrationWarning />
+              League Standings
+            </SectionTitle>
+            <div className="premium-card rounded-2xl overflow-hidden">
+              <div className="px-2 py-1">
                 <StandingsTable standings={mockLeague.standings} highlightTeamId="t1" compact />
               </div>
             </div>
           </motion.div>
         </div>
 
-        {/* Right: Alerts + Top Players */}
-        <div className="space-y-6">
+        {/* Right col: Alerts + Top Players */}
+        <div className="space-y-5">
           {/* Alerts */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-slate-900/50 border border-white/5 rounded-2xl p-5"
+            transition={{ duration: 0.5, delay: 0.16 }}
           >
-            <h2 className="text-white font-semibold mb-4 flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-yellow-400" />
-              Club Alerts
-            </h2>
-            <div className="space-y-3">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-white font-bold text-sm flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-amber-400" suppressHydrationWarning />
+                Club Alerts
+              </h2>
+              <span className="text-xs text-slate-600">{injuredPlayers + pendingPlayers + 2} active</span>
+            </div>
+            <div className="premium-card rounded-2xl p-4 space-y-2.5">
               {injuredPlayers > 0 && (
                 <div className="flex items-start gap-3 p-3 rounded-xl bg-red-500/5 border border-red-500/10">
-                  <div className="w-2 h-2 rounded-full bg-red-400 shrink-0 mt-1.5" />
+                  <Circle className="w-2.5 h-2.5 text-red-400 shrink-0 mt-1 fill-red-400" suppressHydrationWarning />
                   <span className="text-sm text-slate-300">
-                    {injuredPlayers} player{injuredPlayers > 1 ? 's' : ''} currently injured
+                    <span className="text-white font-semibold">{injuredPlayers}</span> player{injuredPlayers > 1 ? 's' : ''} currently injured
                   </span>
                 </div>
               )}
               {pendingPlayers > 0 && (
-                <div className="flex items-start gap-3 p-3 rounded-xl bg-yellow-500/5 border border-yellow-500/10">
-                  <div className="w-2 h-2 rounded-full bg-yellow-400 shrink-0 mt-1.5" />
+                <div className="flex items-start gap-3 p-3 rounded-xl bg-amber-500/5 border border-amber-500/10">
+                  <Circle className="w-2.5 h-2.5 text-amber-400 shrink-0 mt-1 fill-amber-400" suppressHydrationWarning />
                   <span className="text-sm text-slate-300">
-                    {pendingPlayers} registration{pendingPlayers > 1 ? 's' : ''} awaiting approval
+                    <span className="text-white font-semibold">{pendingPlayers}</span> registration{pendingPlayers > 1 ? 's' : ''} pending approval
                   </span>
                 </div>
               )}
               <div className="flex items-start gap-3 p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
-                <div className="w-2 h-2 rounded-full bg-emerald-400 shrink-0 mt-1.5" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" suppressHydrationWarning />
                 <span className="text-sm text-slate-300">
-                  League position: <strong className="text-white">#2</strong> — 8pts behind leaders
+                  League position: <span className="text-white font-bold">#2</span> — 8 pts behind leaders
                 </span>
               </div>
               <div className="flex items-start gap-3 p-3 rounded-xl bg-blue-500/5 border border-blue-500/10">
-                <div className="w-2 h-2 rounded-full bg-blue-400 shrink-0 mt-1.5" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5" suppressHydrationWarning />
                 <span className="text-sm text-slate-300">
-                  {activeTeams} teams active this season
+                  <span className="text-white font-bold">{activeTeams}</span> teams active this season
                 </span>
               </div>
             </div>
           </motion.div>
 
-          {/* Top Players */}
+          {/* Top performers */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.35 }}
+            transition={{ duration: 0.5, delay: 0.28 }}
           >
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-white font-semibold flex items-center gap-2">
-                <User className="w-4 h-4 text-emerald-400" />
-                Top Performers
-              </h2>
-              <Link href="/dashboard/players" className="text-slate-500 hover:text-red-400 text-xs transition-colors">
-                All players →
-              </Link>
-            </div>
+            <SectionTitle href="/dashboard/players" linkLabel="All players">
+              <User className="w-4 h-4 text-emerald-400" suppressHydrationWarning />
+              Top Performers
+            </SectionTitle>
             <div className="space-y-3">
               {players
                 .filter((p) => p.status === 'active')
